@@ -21,10 +21,6 @@ public class TileCollection : ScriptableObject
 
     public static TileBase GetTile(string id)
     {
-        //if (tls.ContainsKey(id))
-        //{
         return tls[id];
-        //}
-        //return null;
     }
 }

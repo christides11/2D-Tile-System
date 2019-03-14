@@ -6,17 +6,14 @@ using UnityEngine;
 [System.Serializable]
 public class MapDefinition
 {
-    [SerializeField] public Chunk[,] chunks;
+    [SerializeField] public ChunkDefinition[,] chunks;
     [SerializeField] public int seed;
 }
 
 [System.Serializable]
-public class Chunk
+public class ChunkDefinition
 {
     [NonSerialized] public bool rendered = false;
-    [NonSerialized] public bool unrendering = false;
-    //public float[,] lightAbsorbed;
-    //public float[,] lightEmitted;
     //The last tick the chunk was updated.
     public uint lastTick;
     //The background blocks in this chunk.
@@ -26,16 +23,15 @@ public class Chunk
     //Chunk pallete
     public List<string> chunkPallete;
 
-    //Each block has a defined biome it's in.
-    //public byte[,] biomeDef;
     //Info for each block in the chunk.
     //[SerializeField] public BlockStateInfo[,] blockStateInfo;
 
-    public Chunk(int chunkWidth, int chunkHeight)
+    public ChunkDefinition(int chunkWidth, int chunkHeight)
     {
         lastTick = 0;
         bgTiles = new short[chunkWidth, chunkHeight];
         fgTiles = new short[chunkWidth, chunkHeight];
+        chunkPallete = new List<string>();
     }
 
     public string GetTile(int x, int y, bool FG)

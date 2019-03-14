@@ -15,10 +15,23 @@ public class TileBase : ScriptableObject
     [HideInInspector] public int collY;
     public Vector2[] vertices;
     public int[] triangles;
-    public Vector3[] colVertices;
-    public int[] colTriangles;
 
-    public void GetCollisionTop()
+    public Vector3[] colVerticesTop;
+    public int[] colTrianglesTop;
+    public Vector3[] colVerticesBtm;
+    public int[] colTrianglesBtm;
+    public Vector3[] colVerticesLeft;
+    public int[] colTrianglesLeft;
+    public Vector3[] colVerticesRight;
+    public int[] colTrianglesRight;
+
+    public virtual Vector3[] GetCollisionTop(out int[] trianglesTop)
+    {
+        trianglesTop = colTrianglesTop;
+        return colVerticesTop;
+    }
+
+    public virtual void OnAddedToMap(int x, int y)
     {
 
     }
