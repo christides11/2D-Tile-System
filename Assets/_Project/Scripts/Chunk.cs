@@ -7,7 +7,7 @@ public class Chunk : MonoBehaviour
 {
     private List<Vector3> newVertices = new List<Vector3>();
     private List<int> newTriangles = new List<int>();
-    private List<Vector2> newUV = new List<Vector2>();
+    private List<Vector3> newUV = new List<Vector3>();
 
     private Mesh newMesh;
     public List<Vector3> colVertices = new List<Vector3>();
@@ -51,7 +51,7 @@ public class Chunk : MonoBehaviour
         mesh.Clear();
         mesh.vertices = newVertices.ToArray();
         mesh.triangles = newTriangles.ToArray();
-        //mesh.uv = newUV.ToArray();
+        mesh.SetUVs(0, newUV);
         mesh.RecalculateNormals();
 
         newVertices.Clear();
@@ -95,6 +95,11 @@ public class Chunk : MonoBehaviour
             newTriangles.Add(faceOffset + t.triangles[j]);
         }
         faceOffset += a;
+
+        for(int w = 0; w < t.uvs.Length; w++)
+        {
+            newUV.Add(t.uvs[w]);
+        }
 
         //newUV.Add(new Vector2(tUnit * tStone.x, tUnit * tStone.y + tUnit));
         //newUV.Add(new Vector2(tUnit * tStone.x + tUnit, tUnit * tStone.y + tUnit));

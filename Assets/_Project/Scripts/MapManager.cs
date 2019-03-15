@@ -14,13 +14,18 @@ public class MapManager : MonoBehaviour
     public int chunkWidth;
     public int chunkHeight;
     public string seed;
+    public Vector2 scale = new Vector2(1,1);
 
     public string[,] temporaryMap = null;
     public string[,] temporaryMapBG = null;
 
-    public string tempTile;
-
     [HideInInspector] public bool mapGenerated;
+
+    public int chunksX;
+    public int chunksY;
+
+    [Header("Debug")]
+    public string tempTile;
 
     void Start()
     {
@@ -52,6 +57,8 @@ public class MapManager : MonoBehaviour
             map.seed = seed.GetHashCode();
             UnityEngine.Random.InitState(map.seed);
         }
+        chunksX = mapWidth / chunkWidth;
+        chunksY = mapHeight / chunkHeight;
         map.chunks = new ChunkDefinition[mapWidth/chunkWidth, mapHeight/chunkHeight];
         for(int i = 0; i < map.chunks.GetLength(0); i++)
         {

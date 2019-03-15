@@ -42,9 +42,16 @@ MonoBehaviour:
   - {x: 1, y: -1}
   - {x: 0, y: -1}
   triangles: 000000000100000003000000010000000200000003000000
-  colVertices:
-  - {x: 0, y: 0, z: 1}
-  - {x: 1, y: 0, z: 1}
+  uvs:
+  - {x: 0, y: 1, z: 0}
+  - {x: 1, y: 1, z: 0}
   - {x: 1, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  colTriangles: 000000000100000003000000010000000200000003000000
+  colVerticesTop: []
+  colTrianglesTop: 
+  colVerticesBtm: []
+  colTrianglesBtm: 
+  colVerticesLeft: []
+  colTrianglesLeft: 
+  colVerticesRight: []
+  colTrianglesRight: 

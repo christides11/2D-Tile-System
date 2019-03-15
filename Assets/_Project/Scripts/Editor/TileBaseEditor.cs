@@ -60,6 +60,10 @@ public class TileBaseEditor : Editor
             EditorGUI.indentLevel--;
         }
 
+        GUILayout.Space(20);
+        EditorGUILayout.LabelField("Default Inspector ");
+        DrawDefaultInspector();
+
         if (GUI.changed)
         {
             EditorUtility.SetDirty(_target);

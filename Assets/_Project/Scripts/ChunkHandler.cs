@@ -22,7 +22,8 @@ public class ChunkHandler : MonoBehaviour
     [SerializeField] private Transform player;
     public ChunkRenderer fg;
     public ChunkRenderer bg;
-    [HideInInspector] public List<Vector2Int> currentLoadedChunks = new List<Vector2Int>();
+    [HideInInspector] public List<Vector2Int> loadedChunks = new List<Vector2Int>();
+    int unloadTimer = 0;
 
     public string tempTile;
 
@@ -36,6 +37,7 @@ public class ChunkHandler : MonoBehaviour
     {
         if(mm.mapGenerated)
         {
+            UnloadChunks();
             FindChunksToRender();
         }
     }
@@ -45,13 +47,18 @@ public class ChunkHandler : MonoBehaviour
     Chunk nChunk;
     void FindChunksToRender()
     {
-        pChunk.x = Mathf.FloorToInt(player.position.x / mm.chunkWidth);
-        pChunk.y = Mathf.FloorToInt(player.position.y / mm.chunkHeight);
+        pChunk.x = Mathf.FloorToInt(player.position.x / (mm.chunkWidth*mm.scale.x));
+        pChunk.y = Mathf.FloorToInt(player.position.y / (mm.chunkHeight*mm.scale.y));
 
         for (int i = 0; i < chunkPos.Length; i++)
         {
             cPos.x = chunkPos[i].x + pChunk.x;
             cPos.y = chunkPos[i].y + pChunk.y;
+
+            if (cPos.x < 0 || cPos.x >= mm.chunksX || cPos.y < 0 || cPos.y >= mm.chunksY)
+            {
+                continue;
+            }
 
             nChunk = fg.GetChunk(cPos);
 
@@ -59,7 +66,33 @@ public class ChunkHandler : MonoBehaviour
                 continue;
 
             GenChunk(cPos.x, cPos.y);
+            loadedChunks.Add(cPos);
         }
+    }
+
+    List<Vector2Int> chunksToDelete = new List<Vector2Int>();
+    void UnloadChunks()
+    {
+        if (unloadTimer >= 10)
+        {
+            pChunk.x = Mathf.FloorToInt(player.position.x / (mm.chunkWidth*mm.scale.x));
+            pChunk.y = Mathf.FloorToInt(player.position.y / (mm.chunkHeight*mm.scale.y));
+            foreach(var ck in loadedChunks)
+            {
+                Vector2Int dist = ck - pChunk;
+                if(dist.x > 1 || dist.x < -1 || dist.y > 1 || dist.y < -1)
+                {
+                    chunksToDelete.Add(ck);
+                }
+            }
+            foreach(var ck in chunksToDelete)
+            {
+                UnloadChunk(ck.x, ck.y);
+            }
+            chunksToDelete.Clear();
+            unloadTimer = 0;
+        }
+        unloadTimer++;
     }
 
     void GenChunk(int x, int y)
@@ -71,5 +104,7 @@ public class ChunkHandler : MonoBehaviour
     void UnloadChunk(int x, int y)
     {
         fg.DestroyChunk(x, y);
+        loadedChunks.Remove(new Vector2Int(x,y));
+        //chunksToDelete.Remove(new Vector2Int(x,y));
     }
 }

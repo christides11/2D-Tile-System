@@ -9,6 +9,7 @@ public class ChunkRenderer : MonoBehaviour
 {
     [SerializeField]private GameObject chunkPrefab;
     public Chunk[,] chunks;
+    public MapManager mm;
 
     public void InitChuns(int width, int height)
     {
@@ -18,8 +19,9 @@ public class ChunkRenderer : MonoBehaviour
     public void AddChunk(int x, int y, int chunkWidth, int chunkHeight)
     {
         chunks[x, y] = Instantiate(chunkPrefab, transform).GetComponent<Chunk>();
-        chunks[x, y].transform.localPosition = new Vector3(x*chunkWidth, y*chunkHeight, 0);
+        chunks[x, y].transform.localPosition = new Vector3(x*chunkWidth*mm.scale.x, y*chunkHeight*mm.scale.y, 0);
         chunks[x, y].position = new Vector2(x, y);
+        chunks[x, y].scale = mm.scale;
         chunks[x, y].cRender = this;
     }
 

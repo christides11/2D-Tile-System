@@ -15,6 +15,7 @@ public class TileBase : ScriptableObject
     [HideInInspector] public int collY;
     public Vector2[] vertices;
     public int[] triangles;
+    public Vector3[] uvs;
 
     public Vector3[] colVerticesTop;
     public int[] colTrianglesTop;
