@@ -8,7 +8,7 @@ public class TileCollection : ScriptableObject
 {
     public static Dictionary<string, TileBase> tls = new Dictionary<string, TileBase>();
     public string prefix;
-    [SerializeField] private TileBase[] tiles;
+    [SerializeField] private TileBase[] tiles = null;
 
     public void BuildDictionary()
     {

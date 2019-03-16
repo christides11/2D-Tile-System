@@ -11,6 +11,11 @@ public class ChunkRenderer : MonoBehaviour
     public Chunk[,] chunks;
     public MapManager mm;
 
+    public void Awake()
+    {
+        mm.OnPlaceTile += SetTile;
+    }
+
     public void InitChuns(int width, int height)
     {
         chunks = new Chunk[width,height];
@@ -20,34 +25,19 @@ public class ChunkRenderer : MonoBehaviour
     {
         chunks[x, y] = Instantiate(chunkPrefab, transform).GetComponent<Chunk>();
         chunks[x, y].transform.localPosition = new Vector3(x*chunkWidth*mm.scale.x, y*chunkHeight*mm.scale.y, 0);
-        chunks[x, y].position = new Vector2(x, y);
+        chunks[x, y].position = new Vector2Int(x, y);
         chunks[x, y].scale = mm.scale;
         chunks[x, y].cRender = this;
+        chunks[x, y].update = true;
     }
 
     public void DestroyChunk(int x, int y)
     {
         if (chunks[x, y] != null)
         {
-            Destroy(chunks[x, y]);
+            Destroy(chunks[x, y].gameObject);
+            chunks[x, y] = null;
         }
-    }
-
-    string tl;
-    public void RenderChunk(int x, int y, ChunkDefinition def)
-    {
-        Chunk c = chunks[x, y];
-        for (int i = 0; i < def.fgTiles.GetLength(0); i++)
-        {
-            for (int j = 0; j < def.fgTiles.GetLength(1); j++)
-            {
-                tl = def.GetTile(i, j, true);
-                if (tl != null) {
-                    c.AddTile(i, j, TileCollection.GetTile(tl));
-                }
-            }
-        }
-        c.UpdateChunk();
     }
 
     public Chunk GetChunk(Vector2Int pos)
@@ -57,5 +47,13 @@ public class ChunkRenderer : MonoBehaviour
             return null;
         }
         return chunks[pos.x, pos.y];
+    }
+
+    void SetTile(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer)
+    {
+        if (chunks[chunk.x, chunk.y])
+        {
+            chunks[chunk.x, chunk.y].update = true;
+        }
     }
 }

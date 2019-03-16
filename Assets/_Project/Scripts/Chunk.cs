@@ -5,73 +5,110 @@ using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
-    private List<Vector3> newVertices = new List<Vector3>();
-    private List<int> newTriangles = new List<int>();
-    private List<Vector3> newUV = new List<Vector3>();
+    private CollisionData collisionData =  new CollisionData();
+    private Mesh colMesh;
 
-    private Mesh newMesh;
-    public List<Vector3> colVertices = new List<Vector3>();
-    public List<int> colTriangles = new List<int>();
-
+    private MeshData meshData = new MeshData();
     private Mesh mesh;
     private MeshCollider col;
+    private MeshRenderer mr;
 
     private int faceOffset;
     private int colOffset;
     private int z = 0;
 
     [HideInInspector] public ChunkRenderer cRender;
-    [HideInInspector] public Vector2 position;
+    [HideInInspector] public Vector2Int position;
 
     public bool collision = true;
     public Vector2 scale;
     public Vector2 offset;
 
-    [ReadOnly] public bool update = false;
+    [ReadOnly] public bool update = true;
     [ReadOnly] public bool rendered;
 
-    private void Awake()
+    void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
         col = GetComponent<MeshCollider>();
+        mr = GetComponent<MeshRenderer>();
+        meshData.vertices = new List<Vector3>();
+        meshData.triangles = new List<int>();
+        meshData.uv = new List<Vector3>();
+        collisionData.vertices = new List<Vector3>();
+        collisionData.triangles = new List<int>();
     }
 
-    public void UpdateChunk()
+    public void Update()
+    {
+        if (update)
+        {
+            update = false;
+            UpdateChunk();
+        }
+    }
+
+    void UpdateChunk()
     {
         rendered = true;
-        UpdateMesh();
+        BuildChunk();
+        RenderChunk();
         if (collision)
         {
             UpdateCollision();
         }
     }
 
-    void UpdateMesh()
+    public void DestroyChunk()
     {
-        mesh.Clear();
-        mesh.vertices = newVertices.ToArray();
-        mesh.triangles = newTriangles.ToArray();
-        mesh.SetUVs(0, newUV);
-        mesh.RecalculateNormals();
 
-        newVertices.Clear();
-        newTriangles.Clear();
-        newUV.Clear();
-        faceOffset = 0;
-        if (collision)
+    }
+
+    ChunkDefinition cd;
+    string tl;
+    void BuildChunk()
+    {
+        cd = cRender.mm.map.chunks[position.x, position.y];
+        for(int i = 0; i < cd.fgTiles.GetLength(0); i++)
         {
-            UpdateCollision();
+            for(int j = 0; j < cd.fgTiles.GetLength(0); j++)
+            {
+                tl = cd.GetTile(i, j, true);
+                if (!ReferenceEquals(tl, null))
+                {
+                    AddTile(i, j, TileCollection.GetTile(tl));
+                }
+            }
         }
+    }
+
+    void RenderChunk()
+    {
+        //Render chunk
+        mesh.Clear();
+        mesh.vertices = meshData.vertices.ToArray();
+        mesh.triangles = meshData.triangles.ToArray();
+        mesh.SetUVs(0, meshData.uv);
+        mesh.RecalculateNormals();
+        //Cleanup
+        meshData.vertices.Clear();
+        meshData.triangles.Clear();
+        meshData.uv.Clear();
+        faceOffset = 0;
     }
 
     void UpdateCollision()
     {
-        newMesh.vertices = colVertices.ToArray();
-        newMesh.triangles = colTriangles.ToArray();
-        col.sharedMesh = newMesh;
-
-        colVertices.Clear();
-        colTriangles.Clear();
+        //Add collision
+        Destroy(col.sharedMesh);
+        colMesh.Clear();
+        colMesh.vertices = collisionData.vertices.ToArray();
+        colMesh.triangles = collisionData.triangles.ToArray();
+        colMesh.RecalculateNormals();
+        col.sharedMesh = colMesh;
+        //Cleanup
+        collisionData.vertices.Clear();
+        collisionData.triangles.Clear();
 
         colOffset = 0;
     }
@@ -79,32 +116,31 @@ public class Chunk : MonoBehaviour
     Vector2 vv;
     Vector3 vf = new Vector3(0, 0, 0);
     int a;
-    public void AddTile(int x, int y, TileBase t)
+    void AddTile(int x, int y, TileBase t)
     {
+        if(ReferenceEquals(t, null))
+        {
+            return;
+        }
         a = 0;
         for (int i = 0; i < t.vertices.Length; i++)
         {
             vv = t.vertices[i];
             vf.x = (offset.x + x + vv.x) * scale.x;
             vf.y = (offset.y + y + vv.y) * scale.y;
-            newVertices.Add(vf);
+            meshData.vertices.Add(vf);
             a++;
         }
         for (int j = 0; j < t.triangles.Length; j++)
         {
-            newTriangles.Add(faceOffset + t.triangles[j]);
+            meshData.triangles.Add(faceOffset + t.triangles[j]);
         }
         faceOffset += a;
 
         for(int w = 0; w < t.uvs.Length; w++)
         {
-            newUV.Add(t.uvs[w]);
+            meshData.uv.Add(t.uvs[w]);
         }
-
-        //newUV.Add(new Vector2(tUnit * tStone.x, tUnit * tStone.y + tUnit));
-        //newUV.Add(new Vector2(tUnit * tStone.x + tUnit, tUnit * tStone.y + tUnit));
-        //newUV.Add(new Vector2(tUnit * tStone.x + tUnit, tUnit * tStone.y));
-        //newUV.Add(new Vector2(tUnit * tStone.x, tUnit * tStone.y));
     }
 
     Vector3 cv;
@@ -121,13 +157,13 @@ public class Chunk : MonoBehaviour
             gf.x = (offset.x + x + cv.x) * scale.x;
             gf.y = (offset.y + y + cv.y) * scale.y;
             gf.z = cv.z;
-            colVertices.Add(gf);
+            collisionData.vertices.Add(gf);
             a++;
         }
 
         for(int j = 0; j < trTop.Length; j++)
         {
-            colTriangles.Add(colOffset+trTop[j]);
+            collisionData.triangles.Add(colOffset+trTop[j]);
         }
         colOffset += a;
         #endregion

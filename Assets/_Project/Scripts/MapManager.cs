@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using System;
 using Random = UnityEngine.Random;
+using Unity.Collections;
 
 public class MapManager : MonoBehaviour
 {
+    public static MapManager instance;
     public MapDefinition map;
     public TileCollection tCol;
     public int mapWidth;
@@ -21,25 +23,21 @@ public class MapManager : MonoBehaviour
 
     [HideInInspector] public bool mapGenerated;
 
-    public int chunksX;
-    public int chunksY;
+    public int chunksX { get; private set; }
+    public int chunksY { get; private set; }
 
     [Header("Debug")]
-    public string tempTile;
+    public string[] tempTiles;
+
+    public delegate void PlaceTileAction(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer);
+    public event PlaceTileAction OnPlaceTile;
 
     void Start()
     {
+        instance = this;
         tCol.BuildDictionary();
         mapGenerated = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            InitMap();
-        }
+        InitMap();
     }
 
     public void InitMap()
@@ -52,7 +50,7 @@ public class MapManager : MonoBehaviour
         {
             map.seed = int.Parse(seed);
             UnityEngine.Random.InitState(map.seed);
-        } catch (Exception e)
+        } catch
         {
             map.seed = seed.GetHashCode();
             UnityEngine.Random.InitState(map.seed);
@@ -76,7 +74,13 @@ public class MapManager : MonoBehaviour
         {
             for (int j = 0; j < temporaryMap.GetLength(1); j++)
             {
-                temporaryMap[i, j] = Random.Range(0, 100) > 50 ? tempTile : null;
+                if (Random.Range(0, 100) > 50) {
+                    int inx = Random.Range(0, tempTiles.Length);
+                    temporaryMap[i, j] = tempTiles[inx];
+                } else
+                {
+                    temporaryMap[i, j] = null;
+                }
             }
         }
         TransferToMap();
@@ -88,16 +92,29 @@ public class MapManager : MonoBehaviour
         {
             for (int j = 0; j < temporaryMap.GetLength(1); j++)
             {
-                SetTile(i, j, temporaryMap[i,j], true);
+                SetTile(i, j, temporaryMap[i,j], MapLayers.FG, false);
             }
         }
         temporaryMap = null;
         mapGenerated = true;
     }
 
-    #region Set Tile
-    public void SetTile(int chunkX, int chunkY, int x, int y, string blockID, bool FG)
+    Vector2Int bPos = new Vector2Int();
+    public Vector2Int WorldToBlock(Vector2 pos)
     {
+        bPos.x = Mathf.FloorToInt(pos.x / scale.x);
+        bPos.y = Mathf.FloorToInt(pos.y / scale.y);
+        return bPos;
+    }
+
+    #region Set Tile
+    TileBase tb = null;
+    public void SetTile(int chunkX, int chunkY, int x, int y, string blockID, MapLayers layer, bool callEvent = true)
+    {
+        if(x < 0 || y < 0)
+        {
+            return;
+        }
         short chunkBlockID = 0;
         ChunkDefinition chun = map.chunks[chunkX, chunkY];
         //Update pallete
@@ -115,24 +132,32 @@ public class MapManager : MonoBehaviour
         //Place block
         int X = x - (chunkX * chunkWidth);
         int Y = y - (chunkY * chunkHeight);
-        if (FG)
+        switch (layer)
         {
-            chun.fgTiles[X, Y] = chunkBlockID;
-        } else
-        {
-            chun.bgTiles[X, Y] = chunkBlockID;
+            case MapLayers.FG:
+                chun.fgTiles[X, Y] = chunkBlockID;
+                break;
+            case MapLayers.BG:
+                chun.bgTiles[X, Y] = chunkBlockID;
+                break;
         }
+        tb = null;
         if (!ReferenceEquals(blockID, null))
         {
-            TileCollection.GetTile(chun.chunkPallete[chunkBlockID - 1]).OnAddedToMap(x, y);
+            tb = TileCollection.GetTile(chun.chunkPallete[chunkBlockID - 1]);
+            tb.OnAddedToMap(x, y);
+        }
+        if (callEvent)
+        {
+            OnPlaceTile(new Vector2Int(chunkX, chunkY), new Vector2Int(X, Y), tb, layer);
         }
     }
 
-    public void SetTile(int x, int y, string blockID, bool FG)
+    public void SetTile(int x, int y, string blockID, MapLayers layer, bool callEvent = true)
     {
         int cX = x / chunkWidth;
         int cY = y / chunkHeight;
-        SetTile(cX, cY, x, y, blockID, FG);
+        SetTile(cX, cY, x, y, blockID, layer, callEvent);
     }
     #endregion
 

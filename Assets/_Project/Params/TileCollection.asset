@@ -15,3 +15,5 @@ MonoBehaviour:
   prefix: default
   tiles:
   - {fileID: 11400000, guid: d8376d58a9991b44b88ff0b633c8c56e, type: 2}
+  - {fileID: 11400000, guid: f3a301446cce1d849b6c3a333af250f0, type: 2}
+  - {fileID: 11400000, guid: 85d3dbc1707528249a68156b17846bf7, type: 2}
