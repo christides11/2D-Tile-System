@@ -105,10 +105,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c77f41776919dd48803846170f12f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colVertices: []
-  colTriangles: 
+  col: {fileID: 7670354803031356365}
+  mr: {fileID: 2162613902213419168}
   cRender: {fileID: 0}
   position: {x: 0, y: 0}
+  layer: 0
   collision: 0
   scale: {x: 1, y: 1}
   offset: {x: 0, y: 1}
