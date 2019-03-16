@@ -1,5 +1,7 @@
 # 2D-Tile-System
-A tile-based system similar to those used in Starbound/Terraria.
+A tile-based system similar to those used in Starbound/Terraria.    
+
+This project currently uses Unity **2018.3.8f1**, but would probably work on lower versions.
 
 ## Resources Used
 https://forum.unity.com/threads/tutorial-procedural-meshes-and-voxel-terrain-c.198651/    
