@@ -10,6 +10,7 @@ This project currently uses Unity **2018.3.8f1**, but would probably work on low
 - Tiles
   - Custom Collision (Define collision via vertices/triangles)
   - Textures (Using texture arrays)
+- Multiple Tile Layers
   
   
 
