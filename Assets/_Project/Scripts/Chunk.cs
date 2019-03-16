@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class Chunk : MonoBehaviour
 {
@@ -10,28 +11,27 @@ public class Chunk : MonoBehaviour
 
     private MeshData meshData = new MeshData();
     private Mesh mesh;
-    private MeshCollider col;
-    private MeshRenderer mr;
 
     private int faceOffset;
     private int colOffset;
     private int z = 0;
 
+    public MeshCollider col;
+    public MeshRenderer mr;
     [HideInInspector] public ChunkRenderer cRender;
     [HideInInspector] public Vector2Int position;
+    [HideInInspector] public MapLayers layer;
 
     public bool collision = true;
     public Vector2 scale;
     public Vector2 offset;
 
-    [ReadOnly] public bool update = true;
-    [ReadOnly] public bool rendered;
+    [HideInInspector] public bool update = true;
+    [HideInInspector] public bool rendered;
 
     void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-        col = GetComponent<MeshCollider>();
-        mr = GetComponent<MeshRenderer>();
         meshData.vertices = new List<Vector3>();
         meshData.triangles = new List<int>();
         meshData.uv = new List<Vector3>();
@@ -51,12 +51,18 @@ public class Chunk : MonoBehaviour
     void UpdateChunk()
     {
         rendered = true;
+        //Profiler.BeginSample("BUILD CHUNK");
         BuildChunk();
+        //Profiler.EndSample();
+        //Profiler.BeginSample("RENDER CHUNK");
         RenderChunk();
+        //Profiler.EndSample();
+        //Profiler.BeginSample("COLLISION CHUNK");
         if (collision)
         {
             UpdateCollision();
         }
+        //Profiler.EndSample();
     }
 
     public void DestroyChunk()
@@ -68,18 +74,26 @@ public class Chunk : MonoBehaviour
     string tl;
     void BuildChunk()
     {
+        //Profiler.BeginSample("1");
         cd = cRender.mm.map.chunks[position.x, position.y];
-        for(int i = 0; i < cd.fgTiles.GetLength(0); i++)
+        //Profiler.EndSample();
+        //Profiler.BeginSample("2");
+        for(int i = 0; i < cRender.mm.chunkWidth; i++)
         {
-            for(int j = 0; j < cd.fgTiles.GetLength(0); j++)
+            for(int j = 0; j < cRender.mm.chunkHeight; j++)
             {
-                tl = cd.GetTile(i, j, true);
+                //Profiler.BeginSample("2-1");
+                tl = cd.GetTile(i, j, layer);
+                //Profiler.EndSample();
+                //Profiler.BeginSample("2-2");
                 if (!ReferenceEquals(tl, null))
                 {
                     AddTile(i, j, TileCollection.GetTile(tl));
                 }
+                //Profiler.EndSample();
             }
         }
+        //Profiler.EndSample();
     }
 
     void RenderChunk()

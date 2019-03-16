@@ -10,6 +10,8 @@ public class ChunkRenderer : MonoBehaviour
     [SerializeField]private GameObject chunkPrefab;
     public Chunk[,] chunks;
     public MapManager mm;
+    public MapLayers layer;
+    public Color color = Color.white;
 
     public void Awake()
     {
@@ -29,6 +31,8 @@ public class ChunkRenderer : MonoBehaviour
         chunks[x, y].scale = mm.scale;
         chunks[x, y].cRender = this;
         chunks[x, y].update = true;
+        chunks[x, y].layer = layer;
+        chunks[x, y].mr.material.SetColor("_Color", color);
     }
 
     public void DestroyChunk(int x, int y)

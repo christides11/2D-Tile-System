@@ -7,6 +7,7 @@
 
 Shader "Unlit/Transparent Texture2D" {
 Properties {
+	_Color("Main Color (A=Opacity)", Color) = (1,1,1,1)
     _MainTex ("Tex", 2DArray) = "" {}
 }
 
@@ -21,7 +22,7 @@ SubShader {
         CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            //#pragma target 2.0
+            #pragma target 3.5
             #pragma multi_compile_fog
 			#pragma require 2darray
 
@@ -40,8 +41,8 @@ SubShader {
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            //sampler2D _MainTex;
             float4 _MainTex_ST;
+			fixed4 _Color;
 
             v2f vert (appdata_t v)
             {
@@ -59,7 +60,7 @@ SubShader {
 
             half4 frag (v2f i) : SV_Target
             {
-                fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_MainTex, i.texcoord);
+                fixed4 col = UNITY_SAMPLE_TEX2DARRAY(_MainTex, i.texcoord) * _Color;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

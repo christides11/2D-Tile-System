@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     private MapManager mm;
+    private MapLayers ml;
     public float moveSpeed = 1.0f;
     public float fastSpeed = 2.0f;
     float curspeed;
@@ -22,6 +23,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ml = MapLayers.FG;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ml = MapLayers.BG;
+        }
         curspeed = Input.GetKey(KeyCode.LeftShift) ? fastSpeed : moveSpeed;
         if (Input.GetKey(KeyCode.W))
         {
@@ -51,7 +60,7 @@ public class PlayerController : MonoBehaviour
             {
                 for (int j = -destroyRadius; j < destroyRadius; j++)
                 {
-                    mm.SetTile(blockPos.x + i, blockPos.y + j, blockToPlace, MapLayers.FG);
+                    mm.SetTile(blockPos.x + i, blockPos.y + j, blockToPlace, ml);
                 }
             }
             Profiler.EndSample();
@@ -66,7 +75,7 @@ public class PlayerController : MonoBehaviour
             {
                 for(int j = -destroyRadius; j < destroyRadius; j++)
                 {
-                    mm.SetTile(blockPos.x+i, blockPos.y+j, null, MapLayers.FG);
+                    mm.SetTile(blockPos.x+i, blockPos.y+j, null, ml);
                 }
             }
             Profiler.EndSample();

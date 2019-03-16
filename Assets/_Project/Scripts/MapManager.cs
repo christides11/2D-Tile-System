@@ -8,6 +8,12 @@ using Unity.Collections;
 
 public class MapManager : MonoBehaviour
 {
+    public delegate void PlaceTileAction(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer);
+    public event PlaceTileAction OnPlaceTile;
+
+    public delegate void TickAction();
+    public event TickAction OnTick;
+
     public static MapManager instance;
     public MapDefinition map;
     public TileCollection tCol;
@@ -25,12 +31,13 @@ public class MapManager : MonoBehaviour
 
     public int chunksX { get; private set; }
     public int chunksY { get; private set; }
+    public int currentTick { get; private set; }
+    [SerializeField] [Range(1, 100)]private int ticksPerSecond = 1;
 
     [Header("Debug")]
     public string[] tempTiles;
 
-    public delegate void PlaceTileAction(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer);
-    public event PlaceTileAction OnPlaceTile;
+    private float tickTimer;
 
     void Start()
     {
@@ -40,11 +47,28 @@ public class MapManager : MonoBehaviour
         InitMap();
     }
 
+    private void Update()
+    {
+        if (mapGenerated)
+        {
+            tickTimer += Time.deltaTime;
+            while(tickTimer >= (ticksPerSecond/1.0f))
+            {
+                tickTimer -= (ticksPerSecond/1.0f);
+                if (OnTick != null)
+                {
+                    OnTick();
+                }
+            }
+        }
+    }
+
     public void InitMap()
     {
         map = new MapDefinition();
         temporaryMap = new string[mapWidth, mapHeight];
         temporaryMapBG = new string[mapWidth, mapHeight];
+        currentTick = 0;
         //Seed
         try
         {
@@ -132,15 +156,7 @@ public class MapManager : MonoBehaviour
         //Place block
         int X = x - (chunkX * chunkWidth);
         int Y = y - (chunkY * chunkHeight);
-        switch (layer)
-        {
-            case MapLayers.FG:
-                chun.fgTiles[X, Y] = chunkBlockID;
-                break;
-            case MapLayers.BG:
-                chun.bgTiles[X, Y] = chunkBlockID;
-                break;
-        }
+        chun.tileLayers[layer][X, Y] = chunkBlockID;
         tb = null;
         if (!ReferenceEquals(blockID, null))
         {
@@ -162,12 +178,12 @@ public class MapManager : MonoBehaviour
     #endregion
 
     #region Get Tile
-    public string GetTile(int chunkX, int chunkY, int x, int y, bool FG = true)
+    public string GetTile(int chunkX, int chunkY, int x, int y, MapLayers layer)
     {
-        return map.chunks[chunkX, chunkY].GetTile(x - (chunkX * chunkWidth), y - (chunkY * chunkHeight), FG);
+        return map.chunks[chunkX, chunkY].GetTile(x - (chunkX * chunkWidth), y - (chunkY * chunkHeight), layer);
     }
 
-    public string GetTile(int x, int y, bool FG = true)
+    public string GetTile(int x, int y, MapLayers layer)
     {
         int cX = x / chunkWidth;
         int cY = y / chunkHeight;
@@ -175,7 +191,7 @@ public class MapManager : MonoBehaviour
         {
             return null;
         }
-        return map.chunks[cX, cY].GetTile(x - (cX * chunkWidth), y - (cY * chunkHeight), FG);
+        return map.chunks[cX, cY].GetTile(x - (cX * chunkWidth), y - (cY * chunkHeight), layer);
     }
     #endregion
 

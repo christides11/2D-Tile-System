@@ -86,7 +86,7 @@ public class ChunkHandler : MonoBehaviour
             foreach(var ck in loadedChunks)
             {
                 dist = ck - pChunk;
-                if(dist.x > 1 || dist.x < -1 || dist.y > 1 || dist.y < -1)
+                if(dist.x > renderRadius || dist.x < -renderRadius || dist.y > renderRadius || dist.y < -renderRadius)
                 {
                     chunksToDelete.Add(ck);
                 }
@@ -104,11 +104,13 @@ public class ChunkHandler : MonoBehaviour
     void GenChunk(int x, int y)
     {
         fg.AddChunk(x, y, mm.chunkWidth, mm.chunkHeight);
+        bg.AddChunk(x, y, mm.chunkWidth, mm.chunkHeight);
     }
 
     void UnloadChunk(Vector2Int pos)
     {
         fg.DestroyChunk(pos.x, pos.y);
+        bg.DestroyChunk(pos.x, pos.y);
         loadedChunks.Remove(pos);
     }
 }
