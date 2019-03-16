@@ -3,6 +3,16 @@ A tile-based system similar to those used in Starbound/Terraria.
 
 This project currently uses Unity **2018.3.8f1**, but would probably work on lower versions.
 
+## Current Features
+- Chunks
+  - Loading/Unloading
+  - Placing/Destroying blocks
+- Tiles
+  - Custom Collision (Define collision via vertices/triangles)
+  - Textures (Using texture arrays)
+  
+  
+
 ## Resources Used
 https://forum.unity.com/threads/tutorial-procedural-meshes-and-voxel-terrain-c.198651/    
 https://forum.unity.com/threads/tutorial-c-voxel-terrain-with-infinite-terrain-saving-and-loading.293340/    
