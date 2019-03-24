@@ -15,7 +15,7 @@ public class ChunkHandler : MonoBehaviour
     [SerializeField] private Transform player = null;
     public ChunkRenderer fg;
     public ChunkRenderer bg;
-    [HideInInspector] public List<Vector2Int> loadedChunks = new List<Vector2Int>();
+    public List<Vector2Int> loadedChunks = new List<Vector2Int>();
     [SerializeField] private int unloadChunksAfter = 10; //In frames
     [SerializeField] private int renderRadius = 1;
     int unloadTimer = 0;
@@ -66,8 +66,10 @@ public class ChunkHandler : MonoBehaviour
 
             nChunk = fg.GetChunk(cPos);
 
-            if (nChunk != null)
+            if (loadedChunks.Contains(cPos))
+            {
                 continue;
+            }
 
             GenChunk(cPos.x, cPos.y);
             loadedChunks.Add(cPos);

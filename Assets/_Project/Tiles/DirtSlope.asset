@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a123e5c6288e27d44afb0d7fe898a354, type: 3}
-  m_Name: Grass
+  m_Name: DirtSlope
   m_EditorClassIdentifier: 
   transform:
     e00: 0
@@ -29,8 +29,8 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
-  id: Grass
-  tileName: Grass
+  id: DirtSlope
+  tileName: 
   texture: {fileID: 0}
   coll: 000000000000000000000000000000000000000000000000000000000000
   collPivot: {x: 1, y: 0}
@@ -43,18 +43,18 @@ MonoBehaviour:
   - {x: 0, y: -1}
   triangles: 000000000100000003000000010000000200000003000000
   uvs:
-  - {x: 0, y: 1, z: 1}
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 0, z: 1}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 1, z: 3}
+  - {x: 1, y: 1, z: 3}
+  - {x: 1, y: 0, z: 3}
+  - {x: 0, y: 0, z: 3}
   colVerticesBtm:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   colVerticesRight:
   - {x: 1, y: 0}
-  - {x: 1, y: 1}
+  - {x: 0.5, y: 0.5}
   colVerticesTop:
-  - {x: 1, y: 1}
+  - {x: 0.5, y: 0.5}
   - {x: 0, y: 1}
   colVerticesLeft:
   - {x: 0, y: 1}

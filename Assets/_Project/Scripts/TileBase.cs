@@ -8,7 +8,7 @@ public class TileBase : ScriptableObject
     public Matrix4x4 transform;
     public string id;
     public string tileName;
-    public Sprite sprite;
+    public Texture texture;
     [SerializeField] public bool[] coll = new bool[0];
     [SerializeField] public Vector2Int collPivot;
     [HideInInspector] public int collX;
@@ -17,19 +17,74 @@ public class TileBase : ScriptableObject
     public int[] triangles;
     public Vector3[] uvs;
 
-    public Vector3[] colVerticesTop;
-    public int[] colTrianglesTop;
-    public Vector3[] colVerticesBtm;
-    public int[] colTrianglesBtm;
-    public Vector3[] colVerticesLeft;
-    public int[] colTrianglesLeft;
-    public Vector3[] colVerticesRight;
-    public int[] colTrianglesRight;
+    public Vector2[] colVerticesBtm;
+    public Vector2[] colVerticesRight;
+    public Vector2[] colVerticesTop;
+    public Vector2[] colVerticesLeft;
+    //public int[] colTrianglesTop;
+    //public int[] colTrianglesBtm;
+    //public int[] colTrianglesLeft;
+    //public int[] colTrianglesRight;
 
-    public virtual Vector3[] GetCollisionTop(out int[] trianglesTop)
+    //public virtual Vector2[] GetCollisionTop()
+    //{
+        //trianglesTop = colTrianglesTop;
+    //    return colVerticesTop;
+    //}
+
+    public virtual Vector2[] GetCollisionBtm(int x, int y)
     {
-        trianglesTop = colTrianglesTop;
-        return colVerticesTop;
+        Vector2[] cbtm = new Vector2[colVerticesBtm.Length];
+        for(int i = 0; i < colVerticesBtm.Length; i++)
+        {
+            cbtm[i].x = colVerticesBtm[i].x+x;
+            cbtm[i].y = colVerticesBtm[i].y+y;
+        }
+        return cbtm;
+    }
+
+    public virtual Vector2[] GetCollisionRight(int x, int y)
+    {
+        Vector2[] cbtm = new Vector2[colVerticesRight.Length];
+        for (int i = 0; i < colVerticesRight.Length; i++)
+        {
+            cbtm[i].x = colVerticesRight[i].x + x;
+            cbtm[i].y = colVerticesRight[i].y + y;
+        }
+        return cbtm;
+    }
+
+    public virtual Vector2[] GetCollisionLeft(int x, int y)
+    {
+        Vector2[] cbtm = new Vector2[colVerticesLeft.Length];
+        for (int i = 0; i < colVerticesLeft.Length; i++)
+        {
+            cbtm[i].x = colVerticesLeft[i].x + x;
+            cbtm[i].y = colVerticesLeft[i].y + y;
+        }
+        return cbtm;
+    }
+
+    public virtual Vector2[] GetCollisionTop(int x, int y)
+    {
+        Vector2[] cbtm = new Vector2[colVerticesTop.Length];
+        for (int i = 0; i < colVerticesTop.Length; i++)
+        {
+            cbtm[i].x = colVerticesTop[i].x + x;
+            cbtm[i].y = colVerticesTop[i].y + y;
+        }
+        return cbtm;
+    }
+
+    public virtual Vector2[] GetCollisionTopBk(int x, int y)
+    {
+        Vector2[] cbtm = new Vector2[colVerticesTop.Length];
+        for (int i = colVerticesTop.Length-1; i >= 0; i--)
+        {
+            cbtm[i].x = colVerticesTop[i].x + x;
+            cbtm[i].y = colVerticesTop[i].y + y;
+        }
+        return cbtm;
     }
 
     public virtual void OnAddedToMap(int x, int y)

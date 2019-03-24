@@ -5,6 +5,7 @@ using UnityEngine.Profiling;
 
 public class PlayerController : MonoBehaviour
 {
+    private Rigidbody2D rb;
     [SerializeField] private Camera cam;
     private MapManager mm;
     private MapLayers ml;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         mm = MapManager.instance;
     }
 
@@ -32,22 +34,24 @@ public class PlayerController : MonoBehaviour
             ml = MapLayers.BG;
         }
         curspeed = Input.GetKey(KeyCode.LeftShift) ? fastSpeed : moveSpeed;
+        Vector2 vl = Vector2.zero;
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += Vector3.up * curspeed * Time.deltaTime;
+            vl.y = curspeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += Vector3.down * curspeed * Time.deltaTime;
+            vl.y = -curspeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += Vector3.left * curspeed * Time.deltaTime;
+            vl.x = -curspeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += Vector3.right * curspeed * Time.deltaTime;
+            vl.x = curspeed * Time.deltaTime;
         }
+        rb.velocity = vl;
 
         Vector2 pos;
         Vector2Int blockPos;

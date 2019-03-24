@@ -73,12 +73,11 @@ public class MapManager : MonoBehaviour
         try
         {
             map.seed = int.Parse(seed);
-            UnityEngine.Random.InitState(map.seed);
         } catch
         {
             map.seed = seed.GetHashCode();
-            UnityEngine.Random.InitState(map.seed);
         }
+        UnityEngine.Random.InitState(map.seed);
         chunksX = mapWidth / chunkWidth;
         chunksY = mapHeight / chunkHeight;
         map.chunks = new ChunkDefinition[mapWidth/chunkWidth, mapHeight/chunkHeight];
