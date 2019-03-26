@@ -9,13 +9,13 @@ using Unity.Collections;
 public class MapManager : MonoBehaviour
 {
     public delegate void PlaceTileAction(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer);
-    public event PlaceTileAction OnPlaceTile;
+    public static event PlaceTileAction OnPlaceTile;
 
     public delegate void TickAction();
-    public event TickAction OnTick;
+    public static event TickAction OnTick;
 
     public static MapManager instance;
-    public static MapDefinition map;
+    public MapDefinition map;
     public TileCollection tCol;
     public int mapWidth;
     public int mapHeight;
@@ -52,9 +52,9 @@ public class MapManager : MonoBehaviour
         if (mapGenerated)
         {
             tickTimer += Time.deltaTime;
-            while(tickTimer >= (ticksPerSecond/1.0f))
+            while(tickTimer >= (1.0f/ticksPerSecond))
             {
-                tickTimer -= (ticksPerSecond/1.0f);
+                tickTimer -= (1.0f/ticksPerSecond);
                 if (OnTick != null)
                 {
                     OnTick();

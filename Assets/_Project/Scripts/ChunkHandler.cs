@@ -16,7 +16,7 @@ public class ChunkHandler : MonoBehaviour
     public ChunkRenderer fg;
     public ChunkRenderer bg;
     public List<Vector2Int> loadedChunks = new List<Vector2Int>();
-    [SerializeField] private int unloadChunksAfter = 10; //In frames
+    [SerializeField] private int unloadChunksAfterTicks = 10;
     [SerializeField] private int renderRadius = 1;
     int unloadTimer = 0;
 
@@ -35,6 +35,7 @@ public class ChunkHandler : MonoBehaviour
                 x++;
             }
         }
+        MapManager.OnTick += delegate { unloadTimer += 1; };
     }
 
     void Update()
@@ -80,8 +81,7 @@ public class ChunkHandler : MonoBehaviour
     Vector2Int dist;
     void UnloadChunks()
     {
-        unloadTimer += 1;
-        if (unloadTimer >= unloadChunksAfter)
+        if (unloadTimer >= unloadChunksAfterTicks)
         {
             pChunk.x = Mathf.FloorToInt(player.position.x / (mm.chunkWidth*mm.scale.x));
             pChunk.y = Mathf.FloorToInt(player.position.y / (mm.chunkHeight*mm.scale.y));

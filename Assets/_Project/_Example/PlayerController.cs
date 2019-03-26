@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private Camera cam;
+    [SerializeField] private GameObject minimap;
     private MapManager mm;
     private MapLayers ml;
     public float moveSpeed = 1.0f;
@@ -33,6 +34,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             ml = MapLayers.BG;
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            minimap.SetActive(!minimap.activeSelf);
         }
         curspeed = Input.GetKey(KeyCode.LeftShift) ? fastSpeed : moveSpeed;
         Vector2 moveVec = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));

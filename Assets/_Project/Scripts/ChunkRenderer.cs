@@ -17,7 +17,7 @@ public class ChunkRenderer : MonoBehaviour
 
     public void Awake()
     {
-        mm.OnPlaceTile += SetTile;
+        MapManager.OnPlaceTile += SetTile;
     }
 
     public void InitChuns(int width, int height)
