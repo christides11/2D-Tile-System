@@ -1547,8 +1547,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 534669904}
-  moveSpeed: 900
-  fastSpeed: 1000
+  moveSpeed: 5
+  fastSpeed: 10
   destroyRadius: 3
   blockToPlace: Stone
 --- !u!58 &1806183180

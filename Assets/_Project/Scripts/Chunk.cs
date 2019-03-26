@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
+using System.Linq;
 
 public class Chunk : MonoBehaviour
 {
     private CollisionData collisionData =  new CollisionData();
     private List<EdgeCollider2D> edgeColls = new List<EdgeCollider2D>();
-    //private Mesh colMesh;
 
     private MeshData meshData = new MeshData();
     private Mesh mesh;
 
     private int faceOffset;
-    private int colOffset;
-    private int z = 0;
 
-    //public PolygonCollider2D col;
-    public Vector2 colPoints;
     public MeshRenderer mr;
     [HideInInspector] public ChunkRenderer cRender;
     [HideInInspector] public Vector2Int position;
@@ -40,10 +33,6 @@ public class Chunk : MonoBehaviour
         meshData.uv = new List<Vector3>();
         collisionData.vertices = new List<Vector3>();
         collisionData.triangles = new List<int>();
-        if (collision)
-        {
-            //colMesh = new Mesh();
-        }
     }
 
     public void Update()
@@ -102,7 +91,6 @@ public class Chunk : MonoBehaviour
                 {
                     tb = TileCollection.GetTile(tl);
                     AddTile(i, j, tb);
-                    //AddCollider(i, j, tb);
                 }
                 //Profiler.EndSample();
             }
@@ -131,6 +119,7 @@ public class Chunk : MonoBehaviour
     ChunkDefinition chd;
     void UpdateCollision()
     {
+        /*
         RecycleColls();
         chd = cRender.mm.map.chunks[position.x, position.y];
         chu = chd.tileLayers[layer];
@@ -143,7 +132,7 @@ public class Chunk : MonoBehaviour
                 {
                     if (chu[x, y] != 0)
                     {
-                        if (x == 0 && y == 0)
+                        if (x == 0)
                         {
                             GenerateIsland(x, y);
                         }else
@@ -165,26 +154,13 @@ public class Chunk : MonoBehaviour
                     }
                 }
             }
-        }
-        
-        //Add collision
-        //colMesh.Clear();
-        //colMesh.vertices = collisionData.vertices.ToArray();
-        //colMesh.triangles = collisionData.triangles.ToArray();
-        //colMesh.RecalculateNormals();
-        //col.sharedMesh = colMesh;
-        //Cleanup
-        //collisionData.vertices.Clear();
-        //collisionData.triangles.Clear();
-
-        colOffset = 0;
+        }*/
     }
 
     List<Vector2> points = new List<Vector2>();
     List<Vector2> realPts = new List<Vector2>();
     Vector2Int currentpoint = new Vector2Int(0, 0);
     Vector2Int dir = new Vector2Int(1, 0);
-    int cnt = 0;
     private void GenerateIsland(int x, int y)
     {
         Profiler.BeginSample("Generate Island");
@@ -192,11 +168,10 @@ public class Chunk : MonoBehaviour
         points.Clear();
         realPts.Clear();
         dir = Vector2Int.right;
-        //currentpoint = new Vector2Int(x, y);
         currentpoint.x = x;
         currentpoint.y = y;
         points.Add(currentpoint);
-        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, MapLayers.FG)).GetCollisionBtm(currentpoint.x, currentpoint.y));
+        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionBtm(currentpoint.x, currentpoint.y));
         currentpoint += dir;
         while (!(points[0] == currentpoint))
         {
@@ -204,29 +179,25 @@ public class Chunk : MonoBehaviour
             {
                 if (currentpoint.x >= chu.GetLength(0))
                 {
-                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, MapLayers.FG)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
                     dir = Vector2Int.up;
                 } else if (chu[currentpoint.x, currentpoint.y] == 0)
                 {
-                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, MapLayers.FG)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
                     dir = Vector2Int.up;
                 }else if (currentpoint.y-1 >= 0)
                 {
                     if (chu[currentpoint.x, currentpoint.y-1] != 0)
                     {
-                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, MapLayers.FG)).GetCollisionLeft(currentpoint.x, currentpoint.y - 1));
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y - 1));
                         dir = Vector2Int.down;
-                        //if(chu[currentpoint.x+1, currentpoint.y] != 0)
-                        //{
-                        //ignorePoints.Add(new Vector2(currentpoint.x+1,currentpoint.y));
-                        //}
                     } else
                     {
-                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, MapLayers.FG)).GetCollisionBtm(currentpoint.x, currentpoint.y));
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionBtm(currentpoint.x, currentpoint.y));
                     }
                 } else
                 {
-                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, MapLayers.FG)).GetCollisionBtm(currentpoint.x, currentpoint.y));
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionBtm(currentpoint.x, currentpoint.y));
                 }
             } else if(dir == Vector2Int.up)
             {
@@ -237,7 +208,7 @@ public class Chunk : MonoBehaviour
                 {
                     if (chu[currentpoint.x - 1, currentpoint.y] == 0)
                     {
-                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x-1, currentpoint.y - 1, MapLayers.FG)).GetCollisionTopBk(currentpoint.x-1, currentpoint.y - 1));
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x-1, currentpoint.y - 1, layer)).GetCollisionTopBk(currentpoint.x-1, currentpoint.y - 1));
                         dir = Vector2Int.left;
                         if (currentpoint.x < chu.GetLength(0) && currentpoint.y < chu.GetLength(1))
                         {
@@ -255,71 +226,69 @@ public class Chunk : MonoBehaviour
                                 dir = Vector2Int.right;
                             } else
                             {
-                                realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, MapLayers.FG)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
+                                realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
                             }
                             ignorePoints.Add(new Vector2(currentpoint.x - 1, currentpoint.y));
                         } else
                         {
-                            realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, MapLayers.FG)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
+                            realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x - 1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x - 1, currentpoint.y));
                         }
                     }
                 }
-                //if(chu[currentpoint.x-1, currentpoint.y] != 0)
-                //{
-                    //ignorePoints.Add(new Vector2(currentpoint.x-1, currentpoint.y));
-                //}
             }else if(dir == Vector2Int.left)
             {
                 if (currentpoint.x - 1 < 0)
                 {
                     dir = Vector2Int.down;
-                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, MapLayers.FG)).GetCollisionLeft(currentpoint.x, currentpoint.y - 1));
-                } //else if (currentpoint.y - 1 < 0)
-                //{
-                //    dir = Vector2Int.right;
-                 else if (chu[currentpoint.x - 1, currentpoint.y - 1] == 0)
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y - 1));
+                } else if (chu[currentpoint.x - 1, currentpoint.y - 1] == 0)
                 {
-                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y-1, MapLayers.FG)).GetCollisionLeft(currentpoint.x, currentpoint.y-1));
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y-1, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y-1));
                     dir = Vector2Int.down;
                 } else if (currentpoint.y < chu.GetLength(1)) { 
                     if (chu[currentpoint.x - 1, currentpoint.y] != 0)
                     {
                         dir = Vector2Int.up;
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x-1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x-1, currentpoint.y));
                     }
+                } else
+                {
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y-1, layer)).GetCollisionTopBk(currentpoint.x, currentpoint.y-1));
                 }
-            }else if(dir == Vector2Int.down)
+            } else if(dir == Vector2Int.down)
             {
                 if (currentpoint.y - 1 < 0)
                 {
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                     dir = Vector2Int.right;
                 } else if (chu[currentpoint.x, currentpoint.y - 1] == 0)
                 {
-                    //realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x+1, currentpoint.y, MapLayers.FG)).GetCollisionBtm(currentpoint.x, currentpoint.y));
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                     dir = Vector2Int.right;
                 } else if (currentpoint.x-1 >= 0) {
                     if (chu[currentpoint.x - 1, currentpoint.y - 1] != 0 && chu[currentpoint.x - 1, currentpoint.y] == 0)
                     {
-                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, MapLayers.FG)).GetCollisionTop(currentpoint.x, currentpoint.y - 1));
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionTop(currentpoint.x, currentpoint.y - 1));
                         dir = Vector2Int.left;
-                        //if (chu[currentpoint.x, currentpoint.y - 1] != 0)
-                        //{
-                            //ignorePoints.Add(new Vector2(currentpoint.x, currentpoint.y-1));
-                        //}
+                    } else
+                    {
+                        realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                     }
+                } else
+                {
+                    realPts.AddRange(TileCollection.GetTile(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                 }
             }
             points.Add(currentpoint);
             currentpoint += dir;
         }
+        realPts.Distinct();
+        realPts.Add(realPts[0]);
         Profiler.EndSample();
         Profiler.BeginSample("2");
-        //col.pathCount += 1;
-        //col.SetPath(cnt, points.ToArray());
-        //col.SetPath(cnt, realPts.ToArray());
         EdgeCollider2D ec = GetColl();
         ec.points = realPts.ToArray();
         ignorePoints.AddRange(points);
-        cnt += 1;
         Profiler.EndSample();
         Profiler.EndSample();
     }
@@ -352,35 +321,6 @@ public class Chunk : MonoBehaviour
         {
             meshData.uv.Add(t.uvs[w]);
         }
-    }
-
-    Vector3 cv;
-    Vector3 gf = new Vector3(0, 0, 0);
-    int[] trTop;
-    Vector3[] clVertices;
-    void AddCollider(int x, int y, TileBase t)
-    {
-        /*
-        a = 0;
-        #region Top
-        clVertices = t.GetCollisionTop(out trTop);
-        for(int i = 0; i < clVertices.Length; i++)
-        {
-            cv = clVertices[i];
-            gf.x = (offset.x + x + cv.x) * scale.x;
-            gf.y = (offset.y + y + cv.y) * scale.y;
-            gf.z = cv.z;
-            collisionData.vertices.Add(gf);
-            a++;
-        }
-
-        for(int j = 0; j < trTop.Length; j++)
-        {
-            collisionData.triangles.Add(colOffset+trTop[j]);
-        }
-        colOffset += a;
-        #endregion
-        */
     }
 
     EdgeCollider2D GetColl()

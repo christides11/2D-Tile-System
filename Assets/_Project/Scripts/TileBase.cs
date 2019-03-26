@@ -5,9 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Base Tile", menuName ="Tiles/Base Tile")]
 public class TileBase : ScriptableObject
 {
-    public Matrix4x4 transform;
+    //public Matrix4x4 transform;
     public string id;
     public string tileName;
+    public GameObject gameObject;
     public Texture texture;
     [SerializeField] public bool[] coll = new bool[0];
     [SerializeField] public Vector2Int collPivot;
@@ -21,16 +22,6 @@ public class TileBase : ScriptableObject
     public Vector2[] colVerticesRight;
     public Vector2[] colVerticesTop;
     public Vector2[] colVerticesLeft;
-    //public int[] colTrianglesTop;
-    //public int[] colTrianglesBtm;
-    //public int[] colTrianglesLeft;
-    //public int[] colTrianglesRight;
-
-    //public virtual Vector2[] GetCollisionTop()
-    //{
-        //trianglesTop = colTrianglesTop;
-    //    return colVerticesTop;
-    //}
 
     public virtual Vector2[] GetCollisionBtm(int x, int y)
     {
@@ -87,7 +78,12 @@ public class TileBase : ScriptableObject
         return cbtm;
     }
 
-    public virtual void OnAddedToMap(int x, int y)
+    public virtual void OnAddedToMap(int x, int y, MapLayers layer)
+    {
+
+    }
+
+    public virtual void RefreshTile(Vector2Int position, MapLayers layer)
     {
 
     }

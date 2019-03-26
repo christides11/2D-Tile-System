@@ -15,7 +15,7 @@ public class MapManager : MonoBehaviour
     public event TickAction OnTick;
 
     public static MapManager instance;
-    public MapDefinition map;
+    public static MapDefinition map;
     public TileCollection tCol;
     public int mapWidth;
     public int mapHeight;
@@ -155,12 +155,13 @@ public class MapManager : MonoBehaviour
         //Place block
         int X = x - (chunkX * chunkWidth);
         int Y = y - (chunkY * chunkHeight);
-        chun.tileLayers[layer][X, Y] = chunkBlockID;
+        chun.tileLayers[layer][X, Y] = new TileDefinition();
+        chun.tileLayers[layer][X, Y].tile = chunkBlockID;
         tb = null;
         if (!ReferenceEquals(blockID, null))
         {
             tb = TileCollection.GetTile(chun.chunkPallete[chunkBlockID - 1]);
-            tb.OnAddedToMap(x, y);
+            tb.OnAddedToMap(x, y, layer);
         }
         if (callEvent)
         {
@@ -194,4 +195,25 @@ public class MapManager : MonoBehaviour
     }
     #endregion
 
+    #region Bitmask
+    public void SetBitmask(int chunkX, int chunkY, int x, int y, byte mask, MapLayers layer, bool callEvent = true)
+    {
+        ChunkDefinition chun = map.chunks[chunkX, chunkY];
+        map.chunks[chunkX, chunkY].tileLayers[layer][x, y].bitmask = mask;
+    }
+
+    public void SetBitmask(int x, int y, byte mask, MapLayers layer, bool callEvent = true)
+    {
+        int cX = x / chunkWidth;
+        int cY = y / chunkHeight;
+        SetBitmask(cX, cY, x, y, mask, layer, callEvent);
+    }
+
+    public byte GetBitmask(int x, int y, MapLayers layer)
+    {
+        int cX = x / chunkWidth;
+        int cY = y / chunkHeight;
+        return map.chunks[cX, cY].tileLayers[layer][x - (cX * chunkWidth), y - (cY * chunkHeight)].bitmask;
+    }
+    #endregion
 }

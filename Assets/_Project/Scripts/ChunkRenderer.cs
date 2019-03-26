@@ -27,7 +27,6 @@ public class ChunkRenderer : MonoBehaviour
 
     public void AddChunk(int x, int y, int chunkWidth, int chunkHeight)
     {
-        //chunks[x,y] = Instantiate(chunkPrefab, transform).GetComponent<Chunk>();
         chunks[x, y] = GetChunkFromPool();
         Chunk c = chunks[x, y];
         c.transform.localPosition = new Vector3(x*chunkWidth*mm.scale.x, y*chunkHeight*mm.scale.y, 0);
@@ -44,7 +43,6 @@ public class ChunkRenderer : MonoBehaviour
     {
         if (chunks[x, y] != null)
         {
-            //Destroy(chunks[x, y].gameObject);
             chunks[x, y].gameObject.SetActive(false);
             chunks[x, y] = null;
         }
