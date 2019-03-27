@@ -37,6 +37,7 @@ public class ChunkRenderer : MonoBehaviour
         c.update = true;
         c.layer = layer;
         c.mr.material.SetColor("_Color", color);
+        chunks[x, y].gameObject.SetActive(true);
     }
 
     public void DestroyChunk(int x, int y)
@@ -75,7 +76,6 @@ public class ChunkRenderer : MonoBehaviour
         {
             if (!chunkPool[i].gameObject.activeSelf)
             {
-                chunkPool[i].gameObject.SetActive(true);
                 return chunkPool[i];
             }
         }

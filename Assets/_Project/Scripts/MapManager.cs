@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 using System;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 using Unity.Collections;
+using System.Threading;
+using UnityEngine.UI;
 
 public class MapManager : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
     public MapDefinition map;
     public TileCollection tCol;
+    public IGenerator[] worldGens;
     public int mapWidth;
     public int mapHeight;
     public int chunkWidth;
@@ -24,8 +27,9 @@ public class MapManager : MonoBehaviour
     public string seed;
     public Vector2 scale = new Vector2(1,1);
 
-    public string[,] temporaryMap = null;
-    public string[,] temporaryMapBG = null;
+    //public string[,] temporaryMap = null;
+    //public string[,] temporaryMapBG = null;
+    public Dictionary<MapLayers, string[,]> temporaryMap = new Dictionary<MapLayers, string[,]>();
 
     [HideInInspector] public bool mapGenerated;
 
@@ -39,16 +43,29 @@ public class MapManager : MonoBehaviour
 
     private float tickTimer;
 
+    public Image progressBar;
+    public float progress;
+
     void Start()
     {
         instance = this;
         tCol.BuildDictionary();
         mapGenerated = false;
-        InitMap();
     }
 
     private void Update()
     {
+        if(!mapGenerated && Input.GetKeyDown(KeyCode.T))
+        {
+            var thread = new Thread(InitMap);
+            thread.Start();
+        }
+
+        if (!mapGenerated)
+        {
+            progressBar.fillAmount = progress;
+        }
+
         if (mapGenerated)
         {
             tickTimer += Time.deltaTime;
@@ -63,11 +80,12 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    Random ran;
     public void InitMap()
     {
         map = new MapDefinition();
-        temporaryMap = new string[mapWidth, mapHeight];
-        temporaryMapBG = new string[mapWidth, mapHeight];
+        temporaryMap.Add(MapLayers.FG, new string[mapWidth, mapHeight]);
+        temporaryMap.Add(MapLayers.BG, new string[mapWidth, mapHeight]);
         currentTick = 0;
         //Seed
         try
@@ -77,7 +95,7 @@ public class MapManager : MonoBehaviour
         {
             map.seed = seed.GetHashCode();
         }
-        UnityEngine.Random.InitState(map.seed);
+        ran = new Random(map.seed);
         chunksX = mapWidth / chunkWidth;
         chunksY = mapHeight / chunkHeight;
         map.chunks = new ChunkDefinition[mapWidth/chunkWidth, mapHeight/chunkHeight];
@@ -89,33 +107,36 @@ public class MapManager : MonoBehaviour
             }
         }
         GenWorld();
+        while (!mapGenerated)
+        {
+        }
+        Debug.Log("Done!");
     }
 
-    public void GenWorld()
+    public async void GenWorld()
     {
-        for(int i = 0; i < temporaryMap.GetLength(0); i++)
+        for (int i = 0; i < worldGens.Length; i++)
         {
-            for (int j = 0; j < temporaryMap.GetLength(1); j++)
+            IGenerator g = worldGens[i];
+            if (g != null)
             {
-                if (Random.Range(0, 100) > 50) {
-                    int inx = Random.Range(0, tempTiles.Length);
-                    temporaryMap[i, j] = tempTiles[inx];
-                } else
-                {
-                    temporaryMap[i, j] = null;
-                }
+                await g.Generate(map.seed, ran, this);
             }
         }
+
         TransferToMap();
     }
 
     void TransferToMap()
     {
-        for(int i = 0; i < temporaryMap.GetLength(0); i++)
+        for(int i = 0; i < mapWidth; i++)
         {
-            for (int j = 0; j < temporaryMap.GetLength(1); j++)
+            for (int j = 0; j < mapHeight; j++)
             {
-                SetTile(i, j, temporaryMap[i,j], MapLayers.FG, false);
+                foreach(MapLayers ml in temporaryMap.Keys)
+                {
+                    SetTile(i, j, temporaryMap[ml][i,j], ml, false);
+                }
             }
         }
         temporaryMap = null;
