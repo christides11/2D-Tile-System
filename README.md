@@ -7,6 +7,7 @@ This project currently uses Unity **2018.3.8f1**, but would probably work on low
 - Chunks
   - Loading/Unloading
   - Placing/Destroying blocks
+  - Object pooled
 - Tiles
   - Custom Collision (Define collision via vertices/triangles)
   - Variations and bitmasking support
