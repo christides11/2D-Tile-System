@@ -9,7 +9,7 @@ This project currently uses Unity **2018.3.8f1**, but would probably work on low
   - Placing/Destroying blocks
 - Tiles
   - Custom Collision (Define collision via vertices/triangles)
-  - Textures (Using texture arrays)
+  - Variations and bitmasking support
 - Multiple Tile Layers
   
   
