@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd37bd2b657da647aaa45c3e3eef9a4, type: 3}
+  m_Name: Dirt
+  m_EditorClassIdentifier: 
+  id: Dirt
+  tileName: Dirt
+  gameObject: {fileID: 0}
+  textures:
+  - {fileID: 2800000, guid: 1cad4bb77b5c6ba4e8f3179e31817fdd, type: 3}
+  - {fileID: 2800000, guid: ff48b70be3f9a634ea175598db4a7add, type: 3}
+  - {fileID: 2800000, guid: 3db167b77ed7b214aa9cf68afafe37e1, type: 3}
+  - {fileID: 2800000, guid: a232449316a8f13438f8121ed9ad441a, type: 3}
+  - {fileID: 2800000, guid: 4d4c01de437b54f4f874605a330cfe36, type: 3}
+  - {fileID: 2800000, guid: 6521a7c9fae6cb440a5d7fd134d829dd, type: 3}
+  - {fileID: 2800000, guid: 6e38e16c206839c4da62bd3d353ef179, type: 3}
+  - {fileID: 2800000, guid: 9ed48aba2dae1854788ca927da4e8bbf, type: 3}
+  - {fileID: 2800000, guid: 108d6288cb38f1c47a691cb169ec2fcc, type: 3}
+  - {fileID: 2800000, guid: d8dcfbe7a09311d4c850f18fbd348ee5, type: 3}
+  - {fileID: 2800000, guid: 921ca4e42d003c0489712b6611a332f1, type: 3}
+  - {fileID: 2800000, guid: c0657f1e4af70ec46ad12fa71af2583d, type: 3}
+  - {fileID: 2800000, guid: eca54ac553bbec04a9487df78ad5987b, type: 3}
+  - {fileID: 2800000, guid: a925171d995128242881df4fbeb07182, type: 3}
+  - {fileID: 2800000, guid: 3eed52558eeafa84891241ba3fe8c2a9, type: 3}
+  - {fileID: 2800000, guid: 987bcf2c164c0b44cbcb26f1732ee730, type: 3}
+  - {fileID: 2800000, guid: abb0ab78035ae1a49af6ac314d10aeed, type: 3}
+  - {fileID: 2800000, guid: 85a08eb9cad39b346bf0f55eb58462f9, type: 3}
+  - {fileID: 2800000, guid: b69efdf6040edae4ca4b2fdb14604fa8, type: 3}
+  - {fileID: 2800000, guid: 013677f3e2a717944b41d6ba3ffa9da1, type: 3}
+  - {fileID: 2800000, guid: ca8c1107ef1221240b2629e01a4acbb3, type: 3}
+  - {fileID: 2800000, guid: 5fc8e4fcc3a76144989186d56ab313f3, type: 3}
+  - {fileID: 2800000, guid: 987564a8aa082ea4ea471c39819b65b2, type: 3}
+  - {fileID: 2800000, guid: 8c741a9d6da261c40948be5bfd432c39, type: 3}
+  - {fileID: 2800000, guid: 0c9d81241b9ca6d4c9f6f2f86100ed30, type: 3}
+  - {fileID: 2800000, guid: a89950f46e4840d468ed4f1116d7c267, type: 3}
+  - {fileID: 2800000, guid: 6b3453c038b238940812a9de6520cc8b, type: 3}
+  - {fileID: 2800000, guid: 6011ed409e8b753479bbddc5ebe81711, type: 3}
+  - {fileID: 2800000, guid: 3fa856c237d503e4e8f6cb45e74e1665, type: 3}
+  - {fileID: 2800000, guid: 36a8fffc55ac7d54e98a76ef483a8194, type: 3}
+  - {fileID: 2800000, guid: 75c8c6ab232e9d54bb3d50e3ad1d5fd6, type: 3}
+  - {fileID: 2800000, guid: 010c1ce9ff0e4e24a9b51556609fc73a, type: 3}
+  - {fileID: 2800000, guid: b4de6db6a9553fa4e800b8114ecfc3eb, type: 3}
+  - {fileID: 2800000, guid: 00dbc2f2791103141a725836f8547ce3, type: 3}
+  - {fileID: 2800000, guid: ba81054c9a78a5944a5b536cae9d24cd, type: 3}
+  - {fileID: 2800000, guid: efcaf5ef8ae1e6e449bf264cc3493727, type: 3}
+  - {fileID: 2800000, guid: ed736aba628abef43ba30ec710efc9b7, type: 3}
+  - {fileID: 2800000, guid: 28ae42c51aab46941a489f6241f4d4e8, type: 3}
+  - {fileID: 2800000, guid: 1ae39ad74bc09984d8747c8c27f7b77b, type: 3}
+  - {fileID: 2800000, guid: 09d63ce90f0abc345815525a298b8d77, type: 3}
+  - {fileID: 2800000, guid: 977ccc47c7ac8184b9e48b5df8c07acd, type: 3}
+  - {fileID: 2800000, guid: e25a1e8efed27c446b59bbfeda0b46c1, type: 3}
+  - {fileID: 2800000, guid: 8de19ac258b7ddb4db2d889ee62cbbfb, type: 3}
+  - {fileID: 2800000, guid: fa2d786d951077943981e47a6152bdd0, type: 3}
+  - {fileID: 2800000, guid: 4292faa8ea40cb04c9f64f9e2f437333, type: 3}
+  - {fileID: 2800000, guid: d2e52f616258ca443add39d5365a450a, type: 3}
+  - {fileID: 2800000, guid: 8e4b1ab6d0685bc4699ae0dcc8b1e289, type: 3}
+  coll: 
+  collPivot: {x: 1, y: 0}
+  collX: 0
+  collY: 0
+  vertices:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 1, y: -1}
+  - {x: 0, y: -1}
+  triangles: 000000000100000003000000010000000200000003000000
+  uvs:
+  - {x: 0, y: 1, z: 33}
+  - {x: 1, y: 1, z: 33}
+  - {x: 1, y: 0, z: 33}
+  - {x: 0, y: 0, z: 33}
+  colVerticesBtm:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  colVerticesRight:
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  colVerticesTop:
+  - {x: 1, y: 1}
+  - {x: 0, y: 1}
+  colVerticesLeft:
+  - {x: 0, y: 1}
+  - {x: 0, y: 0}
