@@ -6,14 +6,14 @@ This project currently uses Unity **2018.3.8f1**, but would probably work on low
 ## Current Features
 - Chunks
   - Loading/Unloading
-  - Placing/Destroying blocks
+  - Placing/Destroying tiles
   - Object pooled
 - Tiles
-  - Custom Collision (Define collision via vertices/triangles)
+  - Custom collision (useful for slopes or non-block shaped tiles)
   - Variations and bitmasking support
 - Multiple Tile Layers
-  
-  
+- World Generation
+  - Multithreaded
 
 ## Resources Used
 https://forum.unity.com/threads/tutorial-procedural-meshes-and-voxel-terrain-c.198651/    
