@@ -3,71 +3,74 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TileBase), true, isFallback = true)]
-public class TileBaseEditor : Editor
+namespace KL.TileSystem
 {
-    TileBase _target;
-    bool foldo;
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(TileBase), true, isFallback = true)]
+    public class TileBaseEditor : Editor
     {
-        _target = (TileBase)target;
+        TileBase _target;
+        bool foldo;
 
-        _target.id = EditorGUILayout.TextField("ID", _target.id);
-        _target.tileName = EditorGUILayout.TextField("Name", _target.tileName);
-
-        foldo = EditorGUILayout.Foldout(foldo, "Block Space");
-        if (foldo)
+        public override void OnInspectorGUI()
         {
-            EditorGUI.indentLevel++;
-            EditorGUILayout.LabelField($"x: {_target.collX} y: {_target.collY}");
-            _target.collPivot = EditorGUILayout.Vector2IntField("Coll Pivot", _target.collPivot);
+            _target = (TileBase)target;
 
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Remove Width"))
-            {
-                _target.collX -= 1;
-                _target.coll = new bool[_target.collX * _target.collY];
-            }
-            if (GUILayout.Button("Add Width"))
-            {
-                _target.collX += 1;
-                _target.coll = new bool[_target.collX * _target.collY];
-            }
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Remove Height"))
-            {
-                _target.collY -= 1;
-                _target.coll = new bool[_target.collX * _target.collY];
-            }
-            if (GUILayout.Button("Add Height"))
-            {
-                _target.collY += 1;
-                _target.coll = new bool[_target.collX * _target.collY];
-            }
-            EditorGUILayout.EndHorizontal();
+            _target.id = EditorGUILayout.TextField("ID", _target.id);
+            _target.tileName = EditorGUILayout.TextField("Name", _target.tileName);
 
-            for (int i = _target.collY-1; i >= 0; i--)
+            foldo = EditorGUILayout.Foldout(foldo, "Block Space");
+            if (foldo)
             {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.LabelField($"x: {_target.collX} y: {_target.collY}");
+                _target.collPivot = EditorGUILayout.Vector2IntField("Coll Pivot", _target.collPivot);
+
                 EditorGUILayout.BeginHorizontal();
-                for (int j = 0; j < _target.collX; j++)
+                if (GUILayout.Button("Remove Width"))
                 {
-                    _target.coll[j + i * _target.collX] = EditorGUILayout.Toggle(_target.coll[j + i * _target.collX]);
+                    _target.collX -= 1;
+                    _target.coll = new bool[_target.collX * _target.collY];
+                }
+                if (GUILayout.Button("Add Width"))
+                {
+                    _target.collX += 1;
+                    _target.coll = new bool[_target.collX * _target.collY];
                 }
                 EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Remove Height"))
+                {
+                    _target.collY -= 1;
+                    _target.coll = new bool[_target.collX * _target.collY];
+                }
+                if (GUILayout.Button("Add Height"))
+                {
+                    _target.collY += 1;
+                    _target.coll = new bool[_target.collX * _target.collY];
+                }
+                EditorGUILayout.EndHorizontal();
+
+                for (int i = _target.collY - 1; i >= 0; i--)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    for (int j = 0; j < _target.collX; j++)
+                    {
+                        _target.coll[j + i * _target.collX] = EditorGUILayout.Toggle(_target.coll[j + i * _target.collX]);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUI.indentLevel--;
             }
-            EditorGUI.indentLevel--;
-        }
 
-        GUILayout.Space(20);
-        EditorGUILayout.LabelField("Default Inspector ");
-        DrawDefaultInspector();
+            GUILayout.Space(20);
+            EditorGUILayout.LabelField("Default Inspector ");
+            DrawDefaultInspector();
 
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(_target);
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(_target);
 
+            }
         }
     }
 }

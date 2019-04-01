@@ -4,10 +4,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Random = System.Random;
 
-public class IGenerator : ScriptableObject
+namespace KL.TileSystem.MapGen
 {
-    public virtual Task Generate(int seed, Random ran, MapManager mm)
+    public class IGenerator : ScriptableObject
     {
-        return null;
+        public virtual Task Generate(int seed, Random ran, MapManager mm)
+        {
+            return null;
+        }
     }
 }
