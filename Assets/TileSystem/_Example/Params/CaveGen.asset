@@ -17,5 +17,5 @@ MonoBehaviour:
     fillChance: 12
     smoothPasses: 2
     cellMinHeight: 0
-    cellMaxHeight: 100
+    cellMaxHeight: 40
     cellularPerWidth: 50

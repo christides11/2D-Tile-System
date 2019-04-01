@@ -2323,8 +2323,9 @@ MonoBehaviour:
   tCollections: {fileID: 11400000, guid: 4777017d99b0ae340a22741cd0dcadee, type: 2}
   worldGens:
   - {fileID: 11400000, guid: 996e77ac172681549bbc51977ec9563f, type: 2}
-  mapWidth: 100
-  mapHeight: 100
+  - {fileID: 11400000, guid: c6a2f2acb716a174899e44a418cad89b, type: 2}
+  mapWidth: 5000
+  mapHeight: 4000
   chunkWidth: 50
   chunkHeight: 50
   seed: GoStupid
@@ -2838,7 +2839,7 @@ MonoBehaviour:
   mm: {fileID: 1509644931}
   layer: 1
   color: {r: 1, g: 1, b: 1, a: 1}
-  collision: 0
+  collision: 1
 --- !u!1001 &2029994179
 PrefabInstance:
   m_ObjectHideFlags: 0

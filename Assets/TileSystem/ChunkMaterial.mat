@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat
+  m_Name: ChunkMaterial
   m_Shader: {fileID: 4800000, guid: e7b6cf21520f15140897e1d221b0c512, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

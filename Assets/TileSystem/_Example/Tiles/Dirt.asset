@@ -46,6 +46,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 6011ed409e8b753479bbddc5ebe81711, type: 3}
   - {fileID: 2800000, guid: 3fa856c237d503e4e8f6cb45e74e1665, type: 3}
   - {fileID: 2800000, guid: 36a8fffc55ac7d54e98a76ef483a8194, type: 3}
+  - {fileID: 2800000, guid: dc3f502efa127204faf33ede477c2811, type: 3}
   - {fileID: 2800000, guid: 75c8c6ab232e9d54bb3d50e3ad1d5fd6, type: 3}
   - {fileID: 2800000, guid: 010c1ce9ff0e4e24a9b51556609fc73a, type: 3}
   - {fileID: 2800000, guid: b4de6db6a9553fa4e800b8114ecfc3eb, type: 3}
@@ -55,14 +56,14 @@ MonoBehaviour:
   - {fileID: 2800000, guid: ed736aba628abef43ba30ec710efc9b7, type: 3}
   - {fileID: 2800000, guid: 28ae42c51aab46941a489f6241f4d4e8, type: 3}
   - {fileID: 2800000, guid: 1ae39ad74bc09984d8747c8c27f7b77b, type: 3}
+  - {fileID: 2800000, guid: 99be9e5f5a53cee42860818a652c2dc8, type: 3}
+  - {fileID: 2800000, guid: dca5d5f0016c399478bf1c85a6d60409, type: 3}
   - {fileID: 2800000, guid: 09d63ce90f0abc345815525a298b8d77, type: 3}
   - {fileID: 2800000, guid: 977ccc47c7ac8184b9e48b5df8c07acd, type: 3}
   - {fileID: 2800000, guid: e25a1e8efed27c446b59bbfeda0b46c1, type: 3}
   - {fileID: 2800000, guid: 8de19ac258b7ddb4db2d889ee62cbbfb, type: 3}
   - {fileID: 2800000, guid: fa2d786d951077943981e47a6152bdd0, type: 3}
   - {fileID: 2800000, guid: 4292faa8ea40cb04c9f64f9e2f437333, type: 3}
-  - {fileID: 2800000, guid: d2e52f616258ca443add39d5365a450a, type: 3}
-  - {fileID: 2800000, guid: 8e4b1ab6d0685bc4699ae0dcc8b1e289, type: 3}
   coll: 
   collPivot: {x: 1, y: 0}
   collX: 0
@@ -74,10 +75,10 @@ MonoBehaviour:
   - {x: 0, y: -1}
   triangles: 000000000100000003000000010000000200000003000000
   uvs:
-  - {x: 0, y: 1, z: 33}
-  - {x: 1, y: 1, z: 33}
-  - {x: 1, y: 0, z: 33}
-  - {x: 0, y: 0, z: 33}
+  - {x: 0, y: 1, z: 0}
+  - {x: 1, y: 1, z: 0}
+  - {x: 1, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   colVerticesBtm:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

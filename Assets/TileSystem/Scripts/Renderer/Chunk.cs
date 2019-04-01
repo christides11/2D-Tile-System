@@ -326,14 +326,12 @@ namespace KL.TileSystem.Renderer
         Vector3 vf = new Vector3(0, 0, 0);
         void AddTile(int x, int y, TileBase t)
         {
-            //int a = 0;
             for (int i = 0; i < t.vertices.Length; i++)
             {
                 vv = t.vertices[i];
                 vf.x = (offset.x + x + vv.x) * scale.x;
                 vf.y = (offset.y + y + vv.y) * scale.y;
                 meshData.vertices.Add(vf);
-                //a++;
             }
             for (int j = 0; j < t.triangles.Length; j++)
             {
@@ -343,7 +341,8 @@ namespace KL.TileSystem.Renderer
 
             for (int w = 0; w < t.uvs.Length; w++)
             {
-                t.uvs[w].z = t.GetTextureIndex(x, y, layer);
+                t.uvs[w].z = t.GetTextureIndex(x+(position.x*MapManager.instance.chunkWidth), 
+                    y+(position.y*MapManager.instance.chunkHeight), layer);
                 meshData.uv.Add(t.uvs[w]);
             }
         }
