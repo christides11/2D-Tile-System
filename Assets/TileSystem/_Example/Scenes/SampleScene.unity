@@ -1117,6 +1117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
+  - component: {fileID: 534669903}
   m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1124,6 +1125,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &534669903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 100
+  m_RefResolutionX: 1280
+  m_RefResolutionY: 720
+  m_UpscaleRT: 0
+  m_PixelSnapping: 1
+  m_CropFrameX: 1
+  m_CropFrameY: 1
+  m_StretchFill: 1
 --- !u!20 &534669904
 Camera:
   m_ObjectHideFlags: 0
@@ -2324,8 +2345,8 @@ MonoBehaviour:
   worldGens:
   - {fileID: 11400000, guid: 996e77ac172681549bbc51977ec9563f, type: 2}
   - {fileID: 11400000, guid: c6a2f2acb716a174899e44a418cad89b, type: 2}
-  mapWidth: 5000
-  mapHeight: 4000
+  mapWidth: 200
+  mapHeight: 200
   chunkWidth: 50
   chunkHeight: 50
   seed: GoStupid
@@ -2567,7 +2588,7 @@ MonoBehaviour:
   minimap: {fileID: 59262536}
   moveSpeed: 5
   fastSpeed: 10
-  destroyRadius: 3
+  destroyRadius: 2
   blockToPlace:
     nspace: default
     tile: Dirt

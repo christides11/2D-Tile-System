@@ -19,6 +19,7 @@ namespace KL.TileSystem.Renderer
         [HideInInspector] public ChunkRenderer cRender;
         [HideInInspector] public Vector2Int position;
         [HideInInspector] public MapLayers layer;
+        [HideInInspector] public GameObject[,] gameObjects;
 
         public bool collision = false;
         public Vector2 scale;
@@ -36,6 +37,7 @@ namespace KL.TileSystem.Renderer
             collisionData.vertices = new List<Vector3>();
             collisionData.triangles = new List<int>();
             mr.material.SetTexture("_MainTex", MapManager.instance.tCollections.textures);
+            gameObjects = new GameObject[MapManager.instance.chunkWidth, MapManager.instance.chunkHeight];
         }
 
         public void Update()
@@ -66,28 +68,34 @@ namespace KL.TileSystem.Renderer
         ChunkDefinition cd;
         void BuildChunk()
         {
-            //Profiler.BeginSample("1");
             cd = cRender.mm.map.chunks[position.x, position.y];
-            //Profiler.EndSample();
-            //Profiler.BeginSample("2");
             int hei = cRender.mm.chunkHeight;
             MapManager mm = MapManager.instance;
             for (int i = 0; i < cRender.mm.chunkWidth; i++)
             {
                 for (int j = 0; j < hei; j++)
                 {
-                    //Profiler.BeginSample("2-1");
                     TileString tl = cd.GetTile(i, j, layer);
-                    //Profiler.EndSample();
-                    //Profiler.BeginSample("2-2");
                     if (!ReferenceEquals(tl, null))
                     {
-                        AddTile(i, j, mm.GetTileFromCollection(tl));
+                        TileBase tb = mm.GetTileFromCollection(tl);
+                        AddTile(i, j, tb);
+                        if (tb.gameObject) {
+                            if (gameObjects[i, j] == null)
+                            {
+                                gameObjects[i, j] = GameObject.Instantiate(tb.gameObject, transform, false);
+                                gameObjects[i, j].transform.localPosition = new Vector3(i, j) * scale;
+                            }
+                        }
+                    } else
+                    {
+                        if (gameObjects[i, j] != null)
+                        {
+                            Destroy(gameObjects[i,j]);
+                        }
                     }
-                    //Profiler.EndSample();
                 }
             }
-            //Profiler.EndSample();
         }
 
         void RenderChunk()
