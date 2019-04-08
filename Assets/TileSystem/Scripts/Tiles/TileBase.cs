@@ -27,35 +27,71 @@ namespace KL.TileSystem
         public Vector2[] colVerticesTop;
         public Vector2[] colVerticesLeft;
 
-        public virtual Vector2[] GetCollisionBtm(int x, int y)
+        public virtual Vector2[] GetCollisionBtm(int x, int y, bool backwards = false)
         {
             Vector2[] cbtm = new Vector2[colVerticesBtm.Length];
-            for (int i = 0; i < colVerticesBtm.Length; i++)
+            if (backwards)
             {
-                cbtm[i].x = colVerticesBtm[i].x + x;
-                cbtm[i].y = colVerticesBtm[i].y + y;
+                for (int i = colVerticesBtm.Length-1; i >= 0; i--)
+                {
+                    int index = colVerticesBtm.Length - 1 - i;
+                    cbtm[index].x = colVerticesBtm[i].x + x;
+                    cbtm[index].y = colVerticesBtm[i].y + y;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < colVerticesBtm.Length; i++)
+                {
+                    cbtm[i].x = colVerticesBtm[i].x + x;
+                    cbtm[i].y = colVerticesBtm[i].y + y;
+                }
             }
             return cbtm;
         }
 
-        public virtual Vector2[] GetCollisionRight(int x, int y)
+        public virtual Vector2[] GetCollisionRight(int x, int y, bool backwards = false)
         {
             Vector2[] cbtm = new Vector2[colVerticesRight.Length];
-            for (int i = 0; i < colVerticesRight.Length; i++)
+            if (backwards)
             {
-                cbtm[i].x = colVerticesRight[i].x + x;
-                cbtm[i].y = colVerticesRight[i].y + y;
+                for (int i = colVerticesRight.Length - 1; i >= 0; i--)
+                {
+                    int index = colVerticesRight.Length - 1 - i;
+                    cbtm[index].x = colVerticesRight[i].x + x;
+                    cbtm[index].y = colVerticesRight[i].y + y;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < colVerticesRight.Length; i++)
+                {
+                    cbtm[i].x = colVerticesRight[i].x + x;
+                    cbtm[i].y = colVerticesRight[i].y + y;
+                }
             }
             return cbtm;
         }
 
-        public virtual Vector2[] GetCollisionLeft(int x, int y)
+        public virtual Vector2[] GetCollisionLeft(int x, int y, bool backwards = false)
         {
             Vector2[] cbtm = new Vector2[colVerticesLeft.Length];
-            for (int i = 0; i < colVerticesLeft.Length; i++)
+            if (backwards)
             {
-                cbtm[i].x = colVerticesLeft[i].x + x;
-                cbtm[i].y = colVerticesLeft[i].y + y;
+                for (int i = colVerticesLeft.Length-1; i >= 0; i--)
+                {
+                    int index = colVerticesLeft.Length - 1 - i;
+                    cbtm[index].x = colVerticesLeft[i].x + x;
+                    cbtm[index].y = colVerticesLeft[i].y + y;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < colVerticesLeft.Length; i++)
+                {
+                    cbtm[i].x = colVerticesLeft[i].x + x;
+                    cbtm[i].y = colVerticesLeft[i].y + y;
+                }
             }
             return cbtm;
         }
@@ -76,8 +112,9 @@ namespace KL.TileSystem
             Vector2[] cbtm = new Vector2[colVerticesTop.Length];
             for (int i = colVerticesTop.Length - 1; i >= 0; i--)
             {
-                cbtm[i].x = colVerticesTop[i].x + x;
-                cbtm[i].y = colVerticesTop[i].y + y;
+                int index = colVerticesTop.Length - 1 - i;
+                cbtm[index].x = colVerticesTop[i].x + x;
+                cbtm[index].y = colVerticesTop[i].y + y;
             }
             return cbtm;
         }

@@ -19,10 +19,10 @@ namespace KL.TileSystem.Renderer
 
         public void Awake()
         {
-            MapManager.OnPlaceTile += SetTile;
+            MapManager.OnPlaceTile += OnTilePlaced;
         }
 
-        public void InitChuns(int width, int height)
+        public void InitChunks(int width, int height)
         {
             chunks = new Chunk[width, height];
         }
@@ -60,7 +60,8 @@ namespace KL.TileSystem.Renderer
             return chunks[pos.x, pos.y];
         }
 
-        void SetTile(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer)
+        //Update the chunk where the tile was placed.
+        void OnTilePlaced(Vector2Int chunk, Vector2Int pos, TileBase tb, MapLayers layer)
         {
             if (this.layer == layer)
             {

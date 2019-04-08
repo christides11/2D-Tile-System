@@ -60,6 +60,7 @@ namespace KL.TileSystem.Renderer
             RenderChunk();
         }
 
+
         public void DestroyChunk()
         {
 
@@ -135,24 +136,47 @@ namespace KL.TileSystem.Renderer
                         {
                             if (x == 0)
                             {
+                                //Debug.Log("Outline.");
                                 GenerateOutline(x, y);
-                            } else
+                            }
+                            else
                             {
                                 if (x - 1 >= 0 && y - 1 >= 0)
                                 {
                                     if (chu[x - 1, y].tile == 0 && chu[x, y - 1].tile == 0)
                                     {
                                         GenerateOutline(x, y);
-                                    } else if (chu[x - 1, y].tile == 0 && chu[x, y - 1].tile != 0)
-                                    {
-                                        //GenerateInline(x, y);
                                     }
-                                } else if (x - 1 >= 0)
+                                }
+                                else if (x - 1 >= 0)
                                 {
                                     if (chu[x - 1, y].tile == 0)
                                     {
+                                        //Debug.Log("Outline (2).");
                                         GenerateOutline(x, y);
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int y = 0; y < cRender.mm.chunkHeight; y++)
+            {
+                for (int x = 0; x < cRender.mm.chunkWidth; x++)
+                {
+                    Vector2 vt = new Vector2(x, y);
+                    if (!ignorePoints.Contains(vt) || recalcPoints.Contains(vt))
+                    {
+                        if (chu[x, y].tile != 0)
+                        {
+                            if (x > 0)
+                            {
+                                if (chu[x - 1, y].tile == 0)
+                                {
+                                    //Debug.Log($"Inline. ({x},{y})");
+                                    GenerateInline(x, y);
                                 }
                             }
                         }
@@ -249,6 +273,7 @@ namespace KL.TileSystem.Renderer
                         dir = Vector2Int.down;
                     } else if (currentpoint.y < chu.GetLength(1))
                     {
+                        realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionTopBk(currentpoint.x, currentpoint.y - 1));
                         if (chu[currentpoint.x - 1, currentpoint.y].tile != 0)
                         {
                             dir = Vector2Int.up;
@@ -270,13 +295,11 @@ namespace KL.TileSystem.Renderer
                         dir = Vector2Int.right;
                     } else if (currentpoint.x - 1 >= 0)
                     {
+                        realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                         if (chu[currentpoint.x - 1, currentpoint.y - 1].tile != 0 && chu[currentpoint.x - 1, currentpoint.y].tile == 0)
                         {
-                            realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionTop(currentpoint.x, currentpoint.y - 1));
+                            //realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionTop(currentpoint.x, currentpoint.y - 1));
                             dir = Vector2Int.left;
-                        } else
-                        {
-                            realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
                         }
                     } else
                     {
@@ -305,26 +328,68 @@ namespace KL.TileSystem.Renderer
             currentpoint.x = x;
             currentpoint.y = y;
             points.Add(currentpoint);
-            realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y));
+            realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y, true));
             currentpoint += dir;
             while (!(points[0] == currentpoint))
             {
                 if (dir == Vector2Int.up)
                 {
-
+                    if (chu[currentpoint.x, currentpoint.y].tile != 0 && chu[currentpoint.x-1, currentpoint.y].tile != 0)
+                    {
+                        dir = Vector2Int.left;
+                    }else if (chu[currentpoint.x, currentpoint.y].tile == 0)
+                    {
+                        realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y-1, layer)).GetCollisionTopBk(currentpoint.x, currentpoint.y-1));
+                        dir = Vector2Int.right;
+                    }
+                    else
+                    {
+                        realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionLeft(currentpoint.x, currentpoint.y, true));
+                    }
                 } else if (dir == Vector2Int.left)
                 {
-
+                    realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y, layer)).GetCollisionBtm(currentpoint.x, currentpoint.y, true));
+                    if (chu[currentpoint.x-1, currentpoint.y].tile == 0)
+                    {
+                        dir = Vector2Int.up;
+                    }else if (chu[currentpoint.x-1, currentpoint.y-1].tile != 0)
+                    {
+                        dir = Vector2Int.down;
+                    }
                 } else if (dir == Vector2Int.down)
                 {
-
+                    realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x - 1, currentpoint.y, layer)).GetCollisionRight(currentpoint.x - 1, currentpoint.y, true));
+                    if (chu[currentpoint.x, currentpoint.y - 1].tile != 0)
+                    {
+                        dir = Vector2Int.right;
+                    }
+                    else if (chu[currentpoint.x - 1, currentpoint.y - 1].tile == 0)
+                    {
+                        dir = Vector2Int.left;
+                    }
                 } else if (dir == Vector2Int.right)
                 {
-
+                    if (chu[currentpoint.x, currentpoint.y].tile != 0)
+                    {
+                        dir = Vector2Int.up;
+                    }else if(chu[currentpoint.x, currentpoint.y-1].tile == 0)
+                    {
+                        dir = Vector2Int.down;
+                    }
+                    else
+                    {
+                        realPts.AddRange(MapManager.instance.GetTileFromCollection(chd.GetTile(currentpoint.x, currentpoint.y - 1, layer)).GetCollisionTopBk(currentpoint.x, currentpoint.y - 1));
+                    }
                 }
+                points.Add(currentpoint);
+                currentpoint += dir;
             }
             realPts.Distinct();
             realPts.Add(realPts[0]);
+            for (int o = 0; o < realPts.Count; o++)
+            {
+                realPts[o] *= scale;
+            }
             EdgeCollider2D ec = GetColl();
             ec.points = realPts.ToArray();
             ignorePoints.AddRange(points);

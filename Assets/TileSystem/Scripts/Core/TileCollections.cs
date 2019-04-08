@@ -47,7 +47,8 @@ namespace KL.TileSystem
 
         public TileBase GetTile(TileString id)
         {
-            return colls[id.nspace].tls[id.tile];
+            return colls[id.nspace]
+                .tls[id.tile];
         }
     }
 }

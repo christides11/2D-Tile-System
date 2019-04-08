@@ -24,8 +24,8 @@ namespace KL.TileSystem.Renderer
 
         private void Awake()
         {
-            fg.InitChuns(mm.mapWidth / mm.chunkWidth, mm.mapHeight / mm.chunkHeight);
-            bg.InitChuns(mm.mapWidth / mm.chunkWidth, mm.mapHeight / mm.chunkHeight);
+            fg.InitChunks(mm.mapWidth / mm.chunkWidth, mm.mapHeight / mm.chunkHeight);
+            bg.InitChunks(mm.mapWidth / mm.chunkWidth, mm.mapHeight / mm.chunkHeight);
             int width = (renderRadius + renderRadius) + 1;
             chunkPos = new Vector2Int[width * width];
             int x = 0;

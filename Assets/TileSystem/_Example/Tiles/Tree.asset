@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a123e5c6288e27d44afb0d7fe898a354, type: 3}
+  m_Name: Tree
+  m_EditorClassIdentifier: 
+  id: Tree
+  tileName: 
+  gameObject: {fileID: 7343657422441299136, guid: 056fec80a55515f43be29699465b1a78,
+    type: 3}
+  textures: []
+  coll: 
+  collPivot: {x: 0, y: 0}
+  collX: 0
+  collY: 0
+  vertices: []
+  triangles: 
+  uvs: []
+  colVerticesBtm: []
+  colVerticesRight: []
+  colVerticesTop: []
+  colVerticesLeft: []

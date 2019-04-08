@@ -501,7 +501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &170076734
 Light:
   m_ObjectHideFlags: 0
@@ -2345,8 +2345,9 @@ MonoBehaviour:
   worldGens:
   - {fileID: 11400000, guid: 996e77ac172681549bbc51977ec9563f, type: 2}
   - {fileID: 11400000, guid: c6a2f2acb716a174899e44a418cad89b, type: 2}
-  mapWidth: 200
-  mapHeight: 200
+  - {fileID: 11400000, guid: 83548854139a8db46a41c6c64211a72f, type: 2}
+  mapWidth: 400
+  mapHeight: 400
   chunkWidth: 50
   chunkHeight: 50
   seed: GoStupid
@@ -2375,7 +2376,7 @@ MonoBehaviour:
   bg: {fileID: 400473347}
   loadedChunks: []
   unloadChunksAfterTicks: 20
-  renderRadius: 4
+  renderRadius: 2
 --- !u!1 &1530742745
 GameObject:
   m_ObjectHideFlags: 0
@@ -2563,7 +2564,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806183177}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 534669905}

@@ -7,18 +7,6 @@ using UnityEngine;
 
 namespace KL.TileSystem.MapGen
 {
-    [System.Serializable]
-    public struct PerlinNoiseDef
-    {
-        public float scale;
-        public int baseHeight;
-        public float magnitude;
-        public float power;
-        public TileString blockID;
-        public TileString BGBlockID;
-        public bool visible;
-    }
-
     [CreateAssetMenu(fileName = "BaseGen", menuName = "World Gen/BaseGen")]
     public class BaseGen : IGenerator
     {
@@ -69,5 +57,17 @@ namespace KL.TileSystem.MapGen
             }
             gen.progress = 1;
         }
+    }
+
+    [System.Serializable]
+    public struct PerlinNoiseDef
+    {
+        public float scale;
+        public int baseHeight;
+        public float magnitude;
+        public float power;
+        public TileString blockID;
+        public TileString BGBlockID;
+        public bool visible;
     }
 }
